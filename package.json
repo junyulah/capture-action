@@ -1,0 +1,25 @@
+{
+  "name": "capture-action",
+  "version": "0.0.1",
+  "description": "capture user action in browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoveKino/capture-action.git"
+  },
+  "keywords": [
+    "event",
+    "action",
+    "user",
+    "capture"
+  ],
+  "author": "ddchen",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LoveKino/capture-action/issues"
+  },
+  "homepage": "https://github.com/LoveKino/capture-action#readme"
+}
