@@ -17,7 +17,10 @@ module.exports = (eventList, callback, opts = {}) => {
         eventList.forEach((item) => {
             document.addEventListener(item, (e) => {
                 if (opts.onlyUserAction) {
-                    if (e.isTrusted) {
+                    if (e.isTrusted ||
+                        // TODO
+                        // hack for library like fastclick
+                        e.forwardedTouchEvent) {
                         callback && callback(e);
                     }
                 } else {
