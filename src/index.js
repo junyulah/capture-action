@@ -32,13 +32,18 @@ module.exports = (opts = {}) => {
         opts.textContent = true;
     }
 
+    if (opts.style === undefined) {
+        opts.style = true;
+    }
+
     let getAction = (event) => {
         let node = event.target;
         event = serializeEvent(event);
         let path = serializePath(node);
 
         let nodeInfo = serializeNode(node, {
-            textContent: opts.textContent
+            textContent: opts.textContent,
+            style: opts.style
         });
 
         return {
