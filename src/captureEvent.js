@@ -10,6 +10,8 @@
  * !!!use this script at the head of the page, so we can guarentee our event handler will run at the first time.
  */
 
+// TODO bug: proxy iframe events
+// proxy all documents?
 module.exports = (eventList, callback, opts = {}) => {
     // TODO window close event
     let captureUIAction = (document) => {
