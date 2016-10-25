@@ -23,6 +23,11 @@
   },
   "homepage": "https://github.com/LoveKino/capture-action#readme",
   "dependencies": {
+    "bolzano": "0.0.2",
+    "idgener": "0.0.1",
     "serialize-front": "0.0.1"
+  },
+  "devDependencies": {
+    "webpack": "^1.13.2"
   }
 }

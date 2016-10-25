@@ -6,6 +6,10 @@ let {
     serializeEvent, serializeNode, serializePath
 } = require('serialize-front');
 
+let NodeUnique = require('./nodeUnique');
+
+let nodeUnique = NodeUnique();
+
 let getAttachedUIStates = (node) => {
     return {
         window: {
@@ -22,7 +26,7 @@ let getAttachedUIStates = (node) => {
 };
 
 module.exports = (opts = {}) => {
-    opts.eventList = opts.eventList || [];
+    opts.eventTypeList = opts.eventTypeList || [];
 
     if (opts.onlyUserAction === undefined) {
         opts.onlyUserAction = true;
@@ -38,7 +42,6 @@ module.exports = (opts = {}) => {
 
     let getAction = (event) => {
         let node = event.target;
-        event = serializeEvent(event);
         let path = serializePath(node);
 
         let nodeInfo = serializeNode(node, {
@@ -47,12 +50,13 @@ module.exports = (opts = {}) => {
         });
 
         return {
-            event: event,
+            event: serializeEvent(event),
             time: new Date().getTime(),
             attachedUIStates: getAttachedUIStates(node),
             source: {
-                path,
-                node: nodeInfo
+                node: nodeInfo,
+                domNodeId: nodeUnique(node),
+                path
             },
             extra: {
                 url: window.location.href,
@@ -63,7 +67,7 @@ module.exports = (opts = {}) => {
 
     return {
         capture: (handle) => {
-            captureEvent(opts.eventTypeList || [], event => {
+            captureEvent(opts.eventTypeList, event => {
                 let action = getAction(event);
                 handle(action, event);
             }, {
