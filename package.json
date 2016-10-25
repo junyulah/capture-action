@@ -1,6 +1,6 @@
 {
   "name": "capture-action",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "capture user action in browser",
   "main": "index.js",
   "scripts": {
