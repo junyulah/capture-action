@@ -25,7 +25,7 @@
   "dependencies": {
     "bolzano": "0.0.3",
     "idgener": "0.0.1",
-    "serialize-front": "0.0.1"
+    "serialize-front": "0.0.2"
   },
   "devDependencies": {
     "webpack": "^1.13.2"
