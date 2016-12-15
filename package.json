@@ -1,6 +1,6 @@
 {
   "name": "capture-action",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "capture user action in browser",
   "main": "index.js",
   "scripts": {
@@ -23,9 +23,9 @@
   },
   "homepage": "https://github.com/LoveKino/capture-action#readme",
   "dependencies": {
-    "bolzano": "0.0.3",
+    "bolzano": "0.0.4",
     "idgener": "0.0.1",
-    "serialize-front": "0.0.2"
+    "serialize-front": "^0.1.0"
   },
   "devDependencies": {
     "webpack": "^1.13.2"

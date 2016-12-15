@@ -46,7 +46,8 @@ module.exports = (opts = {}) => {
 
         let nodeInfo = serializeNode(node, {
             textContent: opts.textContent,
-            style: opts.style
+            style: opts.style,
+            styleOption: opts.styleOption
         });
 
         return {
