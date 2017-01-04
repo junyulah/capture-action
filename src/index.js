@@ -57,7 +57,7 @@ module.exports = (opts = {}) => {
         let number = {};
 
         if (event.type === 'click') {
-            if (event.target.type === 'number') {
+            if (node.tagName === 'INPUT' && node.type === 'number') {
                 if (lastMouseDownValue === event.target.value) {
                     // TODO what if min or max?
                     number.direction = 'nochange';
