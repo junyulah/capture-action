@@ -1,6 +1,6 @@
 {
   "name": "capture-action",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "description": "capture user action in browser",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "serialize-front": "^0.1.0"
   },
   "devDependencies": {
+    "bolzano": "0.0.4",
     "webpack": "^1.13.2"
   }
 }

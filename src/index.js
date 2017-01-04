@@ -10,21 +10,6 @@ let NodeUnique = require('./nodeUnique');
 
 let nodeUnique = NodeUnique();
 
-let getAttachedUIStates = (node) => {
-    return {
-        window: {
-            pageYOffset: window.pageYOffset,
-            pageXOffset: window.pageXOffset
-        },
-
-        current: {
-            value: node.value,
-            scrollTop: node.scrollTop,
-            scrollLeft: node.scrollLeft
-        }
-    };
-};
-
 module.exports = (opts = {}) => {
     opts.eventTypeList = opts.eventTypeList || [];
 
@@ -53,7 +38,7 @@ module.exports = (opts = {}) => {
         return {
             event: serializeEvent(event),
             time: new Date().getTime(),
-            attachedUIStates: getAttachedUIStates(node),
+            attachedUIStates: getAttachedUIStates(event),
             source: {
                 node: nodeInfo,
                 domNodeId: nodeUnique(node),
@@ -66,9 +51,48 @@ module.exports = (opts = {}) => {
         };
     };
 
+    let getAttachedUIStates = (event) => {
+        let node = event.target;
+
+        let number = {};
+
+        if (event.type === 'click') {
+            if (event.target.type === 'number') {
+                if (lastMouseDownValue === event.target.value) {
+                    // TODO what if min or max?
+                    number.direction = 'nochange';
+                } else if (lastMouseDownValue > event.target.value) {
+                    number.direction = 'down';
+                } else {
+                    number.direction = 'up';
+                }
+            }
+        }
+
+        return {
+            window: {
+                pageYOffset: window.pageYOffset,
+                pageXOffset: window.pageXOffset
+            },
+
+            current: {
+                value: node.value,
+                scrollTop: node.scrollTop,
+                scrollLeft: node.scrollLeft,
+                number
+            }
+        };
+    };
+
+    let lastMouseDownValue = null;
+
     return {
         capture: (handle) => {
-            captureEvent(opts.eventTypeList, event => {
+            captureEvent(['mousedown'], (event) => {
+                lastMouseDownValue = event.target.value;
+            });
+
+            captureEvent(opts.eventTypeList, (event) => {
                 let action = getAction(event);
                 handle(action, event);
             }, {
