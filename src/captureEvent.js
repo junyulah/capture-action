@@ -13,11 +13,16 @@
 // TODO bug: proxy iframe events
 // proxy all documents?
 module.exports = (eventList, callback, opts = {}) => {
+    let captureFlag = false;
+
     // TODO window close event
     let captureUIAction = (document) => {
         // dom event
         eventList.forEach((item) => {
             document.addEventListener(item, (e) => {
+                // we can stop capturing
+                if (!captureFlag) return;
+
                 if (opts.onlyUserAction) {
                     if (e.isTrusted ||
                         // TODO
@@ -33,4 +38,17 @@ module.exports = (eventList, callback, opts = {}) => {
     };
 
     captureUIAction(window.document);
+
+    let start = () => {
+        captureFlag = true;
+    };
+
+    let stop = () => {
+        captureFlag = false;
+    };
+
+    return {
+        start,
+        stop
+    };
 };

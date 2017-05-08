@@ -53,15 +53,17 @@
 
 	let ActionCapture = __webpack_require__(2);
 
-	let {
-	    capture
-	} = ActionCapture({
+	let captuer = ActionCapture({
 	    eventTypeList: ['click']
 	});
 
-	capture((action) => {
+	let {
+	    start
+	} = captuer((action) => {
 	    console.log(action.attachedUIStates.current.number);
 	});
+
+	start();
 
 	document.getElementById('number').value = 100;
 
@@ -69,6 +71,8 @@
 /***/ },
 /* 2 */
 /***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
 
 	module.exports = __webpack_require__(3);
 
@@ -165,19 +169,22 @@
 
 	    let lastMouseDownValue = null;
 
-	    return {
-	        capture: (handle) => {
-	            captureEvent(['mousedown'], (event) => {
-	                lastMouseDownValue = event.target.value;
-	            });
+	    let overrideMouseDown = (event) => {
+	        lastMouseDownValue = event.target.value;
+	    };
 
-	            captureEvent(opts.eventTypeList, (event) => {
-	                let action = getAction(event);
-	                handle(action, event);
-	            }, {
-	                onlyUserAction: opts.onlyUserAction
-	            });
-	        }
+	    return (handle) => {
+	        let dealEvent = (event) => {
+	            let action = getAction(event);
+	            handle(action, event);
+	        };
+
+	        // keep recording
+	        captureEvent(['mousedown'], overrideMouseDown).start();
+
+	        return captureEvent(opts.eventTypeList, dealEvent, {
+	            onlyUserAction: opts.onlyUserAction
+	        });
 	    };
 	};
 
@@ -201,11 +208,16 @@
 	// TODO bug: proxy iframe events
 	// proxy all documents?
 	module.exports = (eventList, callback, opts = {}) => {
+	    let captureFlag = false;
+
 	    // TODO window close event
 	    let captureUIAction = (document) => {
 	        // dom event
 	        eventList.forEach((item) => {
 	            document.addEventListener(item, (e) => {
+	                // we can stop capturing
+	                if (!captureFlag) return;
+
 	                if (opts.onlyUserAction) {
 	                    if (e.isTrusted ||
 	                        // TODO
@@ -221,6 +233,19 @@
 	    };
 
 	    captureUIAction(window.document);
+
+	    let start = () => {
+	        captureFlag = true;
+	    };
+
+	    let stop = () => {
+	        captureFlag = false;
+	    };
+
+	    return {
+	        start,
+	        stop
+	    };
 	};
 
 

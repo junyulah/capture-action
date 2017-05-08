@@ -1,13 +1,15 @@
 let ActionCapture = require('../..');
 
-let {
-    capture
-} = ActionCapture({
+let captuer = ActionCapture({
     eventTypeList: ['click']
 });
 
-capture((action) => {
+let {
+    start
+} = captuer((action) => {
     console.log(action.attachedUIStates.current.number);
 });
+
+start();
 
 document.getElementById('number').value = 100;

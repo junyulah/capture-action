@@ -86,18 +86,21 @@ module.exports = (opts = {}) => {
 
     let lastMouseDownValue = null;
 
-    return {
-        capture: (handle) => {
-            captureEvent(['mousedown'], (event) => {
-                lastMouseDownValue = event.target.value;
-            });
+    let overrideMouseDown = (event) => {
+        lastMouseDownValue = event.target.value;
+    };
 
-            captureEvent(opts.eventTypeList, (event) => {
-                let action = getAction(event);
-                handle(action, event);
-            }, {
-                onlyUserAction: opts.onlyUserAction
-            });
-        }
+    return (handle) => {
+        let dealEvent = (event) => {
+            let action = getAction(event);
+            handle(action, event);
+        };
+
+        // keep recording
+        captureEvent(['mousedown'], overrideMouseDown).start();
+
+        return captureEvent(opts.eventTypeList, dealEvent, {
+            onlyUserAction: opts.onlyUserAction
+        });
     };
 };

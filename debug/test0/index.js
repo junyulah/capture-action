@@ -1,11 +1,13 @@
 let ActionCapture = require('../..');
 
-let {
-    capture
-} = ActionCapture({
-    eventTypeList: ['click']
+let capturer = ActionCapture({
+    eventTypeList: ['click', 'keydown', 'keyup']
 });
 
-capture((action, event) => {
+let {
+    start
+} = capturer((action, event) => {
     console.log(action, event);
 });
+
+start();
